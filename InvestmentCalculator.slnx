@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="InvestmentCalculator.Tests/InvestmentCalculator.Tests.csproj" />
   <Project Path="InvestmentCalculator/InvestmentCalculator.csproj" />
 </Solution>

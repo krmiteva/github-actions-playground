@@ -5,3 +5,5 @@
 /.vs
 /InvestmentCalculator/bin/Debug/net10.0
 /InvestmentCalculator/obj
+/InvestmentCalculator.Tests/bin/Debug/net10.0
+/InvestmentCalculator.Tests/obj
