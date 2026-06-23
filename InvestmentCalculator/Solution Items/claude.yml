@@ -1,0 +1,37 @@
+name: Claude Code Review
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+
+jobs:
+  claude-review:
+    if: |
+      github.actor == 'krmiteva' && (
+        (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+        (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude'))
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: anthropics/claude-code-action@beta
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          model: claude-haiku-4-5-20251001
+          direct_prompt: |
+            Review this pull request. For each file changed, check for:
+            - Bugs and logic errors
+            - Security issues (injection, secrets in code, etc.)
+            - Performance concerns
+            - Code style and maintainability issues
+            Post a concise summary comment with your findings, grouped by severity (critical / warning / suggestion).
